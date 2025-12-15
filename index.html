@@ -62,6 +62,18 @@
             border-bottom: 2px solid #f26522;
         }
         
+        .section-title-toggle {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f26522;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
         .form-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -156,6 +168,212 @@
         @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
         
         .info-text { font-size: 12px; color: #666; margin-top: 10px; font-style: italic; }
+        
+        /* Toggle Switch Styles */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: #f26522;
+        }
+        
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+        
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        /* Drayage Section Styles */
+        .drayage-content {
+            display: none;
+        }
+        
+        .drayage-content.active {
+            display: block;
+        }
+        
+        .drayage-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        
+        .drayage-table th {
+            background: #6c757d;
+            color: white;
+            padding: 10px 6px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .drayage-table td { padding: 6px; border-bottom: 1px solid #eee; }
+        
+        .drayage-table input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        .drayage-table input:focus { outline: none; border-color: #6c757d; }
+        .drayage-table .rate-input { width: 70px; text-align: right; }
+        
+        .accessorial-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .accessorial-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .accessorial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 10px;
+        }
+        
+        .accessorial-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        
+        .accessorial-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #6c757d;
+        }
+        
+        .accessorial-item label {
+            flex: 1;
+            font-size: 13px;
+            color: #333;
+            cursor: pointer;
+        }
+        
+        .accessorial-item input[type="text"],
+        .accessorial-item input[type="number"] {
+            width: 70px;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            text-align: right;
+        }
+        
+        .accessorial-item input[type="text"]:focus,
+        .accessorial-item input[type="number"]:focus {
+            outline: none;
+            border-color: #6c757d;
+        }
+        
+        .accessorial-item .unit-label {
+            font-size: 11px;
+            color: #666;
+            min-width: 40px;
+        }
+        
+        .wait-time-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .wait-time-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #6c757d;
+        }
+        
+        .wait-time-item label {
+            font-size: 13px;
+            color: #333;
+            cursor: pointer;
+            min-width: 80px;
+        }
+        
+        .wait-time-inputs {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #555;
+        }
+        
+        .wait-time-inputs input {
+            width: 50px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        .wait-time-inputs input:focus {
+            outline: none;
+            border-color: #6c757d;
+        }
+        
+        .custom-accessorial-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .custom-accessorial-table th { background: #f8f9fa; padding: 10px; text-align: left; font-size: 11px; font-weight: 600; color: #555; }
+        .custom-accessorial-table td { padding: 8px; border-bottom: 1px solid #eee; }
+        .custom-accessorial-table input[type="text"] { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; width: 100%; }
+        .custom-accessorial-table input[type="text"]:focus { outline: none; border-color: #6c757d; }
+        .custom-accessorial-table input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: #6c757d; }
+        .custom-accessorial-table select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; width: 100%; }
+        .custom-accessorial-table select:focus { outline: none; border-color: #6c757d; }
     </style>
 </head>
 <body>
@@ -276,6 +494,127 @@
             </div>
         </div>
 
+        <!-- Trucking/Drayage Section -->
+        <div class="section">
+            <div class="section-title-toggle">
+                <span>Trucking/Drayage</span>
+                <div class="toggle-label">
+                    <span>Include in Quote</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="drayageToggle" onchange="toggleDrayage()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div id="drayageContent" class="drayage-content">
+                <table class="drayage-table" id="drayageTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 200px;">Origin</th>
+                            <th style="width: 200px;">Destination</th>
+                            <th style="width: 100px;">20STD</th>
+                            <th style="width: 100px;">40STD</th>
+                            <th style="width: 100px;">40HC</th>
+                            <th style="width: 60px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="drayageBody">
+                    </tbody>
+                </table>
+                <div class="button-row">
+                    <button class="btn btn-primary" onclick="addDrayageRow()" style="background: #6c757d;">+ Add Route</button>
+                    <button class="btn btn-secondary" onclick="duplicateLastDrayageRow()">Duplicate Last Route</button>
+                </div>
+                
+                <div class="accessorial-section">
+                    <div class="accessorial-title">Accessorial Charges (if applicable)</div>
+                    <div class="accessorial-grid">
+                        <div class="accessorial-item">
+                            <input type="checkbox" id="acc_prepull">
+                            <label for="acc_prepull">Prepull</label>
+                            <input type="text" id="acc_prepull_rate" value="150">
+                            <span class="unit-label">flat</span>
+                        </div>
+                        <div class="accessorial-item">
+                            <input type="checkbox" id="acc_yard">
+                            <label for="acc_yard">Yard Storage</label>
+                            <input type="text" id="acc_yard_rate" value="50">
+                            <span class="unit-label">/day</span>
+                        </div>
+                        <div class="accessorial-item">
+                            <input type="checkbox" id="acc_chassis_rental">
+                            <label for="acc_chassis_rental">Chassis Rental</label>
+                            <input type="text" id="acc_chassis_rental_rate" value="50">
+                            <span class="unit-label">/day</span>
+                        </div>
+                        <div class="accessorial-item">
+                            <input type="checkbox" id="acc_chassis_split">
+                            <label for="acc_chassis_split">Chassis Split</label>
+                            <input type="text" id="acc_chassis_split_rate" value="150">
+                            <span class="unit-label">flat</span>
+                        </div>
+                        <div class="accessorial-item">
+                            <input type="checkbox" id="acc_overweight">
+                            <label for="acc_overweight">Overweight Fee</label>
+                            <input type="text" id="acc_overweight_rate" value="250">
+                            <span class="unit-label">flat</span>
+                        </div>
+                        <div class="accessorial-item">
+                            <input type="checkbox" id="acc_triaxle">
+                            <label for="acc_triaxle">Tri Axle</label>
+                            <input type="text" id="acc_triaxle_rate" value="150">
+                            <span class="unit-label">/day</span>
+                        </div>
+                        <div class="accessorial-item">
+                            <input type="checkbox" id="acc_reefer">
+                            <label for="acc_reefer">Reefer Fee</label>
+                            <input type="text" id="acc_reefer_rate" value="200">
+                            <span class="unit-label">flat</span>
+                        </div>
+                    </div>
+                    
+                    <div class="accessorial-title" style="margin-top: 15px;">Wait Time Charges</div>
+                    <div class="accessorial-grid">
+                        <div class="wait-time-item">
+                            <input type="checkbox" id="acc_ramp">
+                            <label for="acc_ramp">Ramp Wait</label>
+                            <div class="wait-time-inputs">
+                                <input type="number" id="acc_ramp_free" value="2" min="0"> hrs free, then
+                                $<input type="number" id="acc_ramp_rate" value="80" min="0">/hr after
+                            </div>
+                        </div>
+                        <div class="wait-time-item">
+                            <input type="checkbox" id="acc_warehouse">
+                            <label for="acc_warehouse">Warehouse Wait</label>
+                            <div class="wait-time-inputs">
+                                <input type="number" id="acc_warehouse_free" value="1" min="0"> hr free, then
+                                $<input type="number" id="acc_warehouse_rate" value="100" min="0">/hr after
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accessorial-title" style="margin-top: 15px;">Additional Charges</div>
+                    <table class="custom-accessorial-table" id="customAccessorialTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 30px;">Include</th>
+                                <th>Charge Name</th>
+                                <th style="width: 100px;">Rate</th>
+                                <th style="width: 120px;">Unit</th>
+                                <th style="width: 50px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="customAccessorialBody">
+                        </tbody>
+                    </table>
+                    <div class="button-row">
+                        <button class="btn btn-primary" onclick="addCustomAccessorial()" style="background: #6c757d;">+ Add Accessorial</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Generate Button -->
         <div class="action-bar">
             <button class="btn btn-success generate-btn" onclick="generatePDF()">Generate PDF Quote</button>
@@ -306,10 +645,10 @@
         const defaultSurcharges = [
             { item: 'AMS', price: '$35', unit: 'Per Bill (Billed to shipper unless otherwise agreed)' },
             { item: 'ISF', price: '$35', unit: 'per bill' },
-            { item: 'Pier Pass', price: '$40 / $80', unit: 'per 20 / per 40, 40HC, 40RQ, & 45' },
+            { item: 'Pier Pass', price: '$36 / $72', unit: 'per 20 / per 40, 40HC, 40RQ, & 45' },
             { item: 'Chassis fee', price: '$45', unit: 'per day' },
             { item: 'Destination Handling fee', price: '$80', unit: 'per bill' },
-            { item: 'US Customs Entry Fee (subject to tax and duty)', price: '$115', unit: 'per bill' },
+            { item: 'US Customs Entry Fee (subject to tax and duty)', price: '$95', unit: 'per bill' },
             { item: 'Detention or demurrage admin fee', price: '5% of amount paid (minimum $50)', unit: 'per instance' }
         ];
 
@@ -317,6 +656,18 @@
         function init() {
             addCarrierRow();
             defaultSurcharges.forEach(s => addSurchargeRow(s.item, s.price, s.unit));
+            addDrayageRow();
+        }
+
+        // Toggle drayage section
+        function toggleDrayage() {
+            const content = document.getElementById('drayageContent');
+            const toggle = document.getElementById('drayageToggle');
+            if (toggle.checked) {
+                content.classList.add('active');
+            } else {
+                content.classList.remove('active');
+            }
         }
 
         function addCarrierRow(carrier='', origin='', destination='', pod='', mode='Ocean', effDate='', expDate='', rate20='', rate40='', rate40hc='') {
@@ -371,6 +722,58 @@
             tbody.appendChild(row);
         }
 
+        // Drayage functions
+        function addDrayageRow(origin='', destination='', rate20='', rate40='', rate40hc='') {
+            const tbody = document.getElementById('drayageBody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="text" value="${origin}" placeholder="e.g., Port of LA"></td>
+                <td><input type="text" value="${destination}" placeholder="e.g., City of Industry, CA"></td>
+                <td><input type="text" class="rate-input" value="${rate20}" placeholder="$"></td>
+                <td><input type="text" class="rate-input" value="${rate40}" placeholder="$"></td>
+                <td><input type="text" class="rate-input" value="${rate40hc}" placeholder="$"></td>
+                <td><button class="btn btn-danger" onclick="this.closest('tr').remove()">✕</button></td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        function duplicateLastDrayageRow() {
+            const tbody = document.getElementById('drayageBody');
+            const rows = tbody.querySelectorAll('tr');
+            if (rows.length > 0) {
+                const lastRow = rows[rows.length - 1];
+                const inputs = lastRow.querySelectorAll('input');
+                addDrayageRow(
+                    inputs[0].value,
+                    inputs[1].value,
+                    '', '', '' // rates blank
+                );
+            } else {
+                addDrayageRow();
+            }
+        }
+
+        function addCustomAccessorial(name='', rate='', unit='flat') {
+            const tbody = document.getElementById('customAccessorialBody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td style="text-align: center;"><input type="checkbox" checked></td>
+                <td><input type="text" value="${name}" placeholder="e.g., Hazmat Fee"></td>
+                <td><input type="text" value="${rate}" placeholder="$"></td>
+                <td>
+                    <select>
+                        <option value="flat" ${unit === 'flat' ? 'selected' : ''}>Flat</option>
+                        <option value="/day" ${unit === '/day' ? 'selected' : ''}>/day</option>
+                        <option value="/hr" ${unit === '/hr' ? 'selected' : ''}>/hr</option>
+                        <option value="/mile" ${unit === '/mile' ? 'selected' : ''}>/mile</option>
+                        <option value="per container" ${unit === 'per container' ? 'selected' : ''}>Per Container</option>
+                    </select>
+                </td>
+                <td><button class="btn btn-danger" onclick="this.closest('tr').remove()">✕</button></td>
+            `;
+            tbody.appendChild(row);
+        }
+
         function formatDate(dateStr) {
             if (!dateStr) return '';
             // Parse the date string directly to avoid timezone issues
@@ -388,6 +791,69 @@
             return num ? '$' + parseFloat(num).toLocaleString() : '-';
         }
 
+        function getSelectedAccessorials() {
+            const accessorials = [];
+            
+            if (document.getElementById('acc_prepull').checked) {
+                const rate = document.getElementById('acc_prepull_rate').value;
+                accessorials.push({ name: 'Prepull', rate: `$${rate}`, unit: 'flat' });
+            }
+            if (document.getElementById('acc_yard').checked) {
+                const rate = document.getElementById('acc_yard_rate').value;
+                accessorials.push({ name: 'Yard Storage', rate: `$${rate}`, unit: '/day' });
+            }
+            if (document.getElementById('acc_chassis_rental').checked) {
+                const rate = document.getElementById('acc_chassis_rental_rate').value;
+                accessorials.push({ name: 'Chassis Rental', rate: `$${rate}`, unit: '/day' });
+            }
+            if (document.getElementById('acc_chassis_split').checked) {
+                const rate = document.getElementById('acc_chassis_split_rate').value;
+                accessorials.push({ name: 'Chassis Split', rate: `$${rate}`, unit: 'flat' });
+            }
+            if (document.getElementById('acc_overweight').checked) {
+                const rate = document.getElementById('acc_overweight_rate').value;
+                accessorials.push({ name: 'Overweight Fee', rate: `$${rate}`, unit: 'flat' });
+            }
+            if (document.getElementById('acc_triaxle').checked) {
+                const rate = document.getElementById('acc_triaxle_rate').value;
+                accessorials.push({ name: 'Tri Axle', rate: `$${rate}`, unit: '/day' });
+            }
+            if (document.getElementById('acc_reefer').checked) {
+                const rate = document.getElementById('acc_reefer_rate').value;
+                accessorials.push({ name: 'Reefer Fee', rate: `$${rate}`, unit: 'flat' });
+            }
+            if (document.getElementById('acc_ramp').checked) {
+                const free = document.getElementById('acc_ramp_free').value;
+                const rate = document.getElementById('acc_ramp_rate').value;
+                accessorials.push({ name: 'Ramp Wait Time', rate: `${free} hrs free, then $${rate}/hr after`, unit: '' });
+            }
+            if (document.getElementById('acc_warehouse').checked) {
+                const free = document.getElementById('acc_warehouse_free').value;
+                const rate = document.getElementById('acc_warehouse_rate').value;
+                accessorials.push({ name: 'Warehouse Wait Time', rate: `${free} hr free, then $${rate}/hr after`, unit: '' });
+            }
+            
+            // Get custom accessorials
+            const customRows = document.querySelectorAll('#customAccessorialBody tr');
+            customRows.forEach(row => {
+                const checkbox = row.querySelector('input[type="checkbox"]');
+                const inputs = row.querySelectorAll('input[type="text"]');
+                const select = row.querySelector('select');
+                if (checkbox && checkbox.checked && inputs[0].value) {
+                    const name = inputs[0].value;
+                    const rate = inputs[1].value;
+                    const unit = select.value;
+                    accessorials.push({ 
+                        name: name, 
+                        rate: rate.startsWith('$') ? rate : `$${rate}`, 
+                        unit: unit === 'flat' ? '' : unit 
+                    });
+                }
+            });
+            
+            return accessorials;
+        }
+
         function generatePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'letter');
@@ -400,6 +866,7 @@
             const orange = [242, 101, 34];
             const darkGray = [51, 51, 51];
             const lightGray = [150, 150, 150];
+            const truckingGray = [108, 117, 125];
 
             // Logo
             if (logoDataUrl) {
@@ -510,6 +977,93 @@
                 y += 5;
             }
 
+            // Trucking/Drayage Section (if enabled)
+            const drayageEnabled = document.getElementById('drayageToggle').checked;
+            if (drayageEnabled) {
+                const drayageRows = document.querySelectorAll('#drayageBody tr');
+                const routes = [];
+                drayageRows.forEach(row => {
+                    const inputs = row.querySelectorAll('input');
+                    if (inputs[0].value || inputs[1].value) {
+                        routes.push({
+                            origin: inputs[0].value,
+                            destination: inputs[1].value,
+                            rate20: formatRate(inputs[2].value),
+                            rate40: formatRate(inputs[3].value),
+                            rate40hc: formatRate(inputs[4].value)
+                        });
+                    }
+                });
+
+                if (routes.length > 0) {
+                    doc.setFontSize(10);
+                    doc.setFont(undefined, 'bold');
+                    doc.setTextColor(...truckingGray);
+                    doc.text('Trucking/Drayage Rates:', margin, y);
+                    doc.setFont(undefined, 'normal');
+                    y += 5;
+
+                    // Drayage table header
+                    const tableWidth = pageWidth - margin * 2;
+                    const drayColWidths = [50, 50, 28, 28, 28];
+                    const drayHeaders = ['Origin', 'Destination', '20STD', '40STD', '40HC'];
+                    const drayMaxChars = [30, 30, 10, 10, 10];
+
+                    doc.setFillColor(...truckingGray);
+                    doc.rect(margin, y, tableWidth, 7, 'F');
+
+                    doc.setFontSize(7);
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFont(undefined, 'bold');
+                    let x = margin + 1;
+                    drayHeaders.forEach((h, i) => {
+                        doc.text(h, x, y + 5);
+                        x += drayColWidths[i];
+                    });
+                    doc.setFont(undefined, 'normal');
+                    y += 7;
+
+                    // Drayage table rows
+                    doc.setTextColor(...darkGray);
+                    doc.setFontSize(7);
+                    routes.forEach((r, idx) => {
+                        if (idx % 2 === 0) {
+                            doc.setFillColor(248, 249, 250);
+                            doc.rect(margin, y, tableWidth, 6, 'F');
+                        }
+                        x = margin + 1;
+                        const vals = [r.origin, r.destination, r.rate20, r.rate40, r.rate40hc];
+                        vals.forEach((v, i) => {
+                            const truncated = v.length > drayMaxChars[i] ? v.substring(0, drayMaxChars[i] - 1) + '…' : v;
+                            doc.text(truncated, x, y + 4);
+                            x += drayColWidths[i];
+                        });
+                        y += 6;
+                    });
+                    y += 3;
+
+                    // Accessorials
+                    const accessorials = getSelectedAccessorials();
+                    if (accessorials.length > 0) {
+                        doc.setFontSize(8);
+                        doc.setFont(undefined, 'bold');
+                        doc.setTextColor(...truckingGray);
+                        doc.text('Trucking Accessorials (if applicable):', margin, y);
+                        doc.setFont(undefined, 'normal');
+                        y += 4;
+
+                        doc.setFontSize(7);
+                        doc.setTextColor(...darkGray);
+                        accessorials.forEach(a => {
+                            const line = a.unit ? `• ${a.name}: ${a.rate} ${a.unit}` : `• ${a.name}: ${a.rate}`;
+                            doc.text(line, margin + 2, y);
+                            y += 3.5;
+                        });
+                    }
+                    y += 5;
+                }
+            }
+
             // Surcharges
             const surchargeRows = document.querySelectorAll('#surchargeBody tr');
             const surcharges = [];
@@ -527,6 +1081,7 @@
             if (surcharges.length > 0) {
                 doc.setFontSize(10);
                 doc.setFont(undefined, 'bold');
+                doc.setTextColor(...darkGray);
                 doc.text('Subject to:', margin, y);
                 doc.setFont(undefined, 'normal');
                 y += 5;
@@ -571,11 +1126,18 @@
             if (col !== 0) y += 4;
             y += 5;
 
+            // Check if we need a new page
+            if (y > pageHeight - 60) {
+                doc.addPage();
+                y = margin;
+            }
+
             // Terms
             const textWidth = pageWidth - margin * 2;
             
             doc.setFontSize(9);
             doc.setFont(undefined, 'bold');
+            doc.setTextColor(...darkGray);
             doc.text('Terms:', margin, y);
             doc.setFont(undefined, 'normal');
             y += 4;
