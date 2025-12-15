@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NRA Quote Generator - K-APEX</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .header h1 { color: #333; font-size: 22px; }
+        .header span { color: #666; font-size: 13px; }
+        
+        .logo-upload {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-preview {
+            height: 40px;
+            max-width: 150px;
+            object-fit: contain;
+            display: none;
+        }
+        
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f26522;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group { display: flex; flex-direction: column; }
+        
+        .form-group label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        
+        .form-group input, .form-group select {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #f26522;
+        }
+        
+        .carrier-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        
+        .carrier-table th {
+            background: #f26522;
+            color: white;
+            padding: 10px 6px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .carrier-table td { padding: 6px; border-bottom: 1px solid #eee; }
+        
+        .carrier-table input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        .carrier-table input:focus { outline: none; border-color: #f26522; }
+        .carrier-table .rate-input { width: 70px; text-align: right; }
+        .carrier-table .date-input { width: 110px; }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary { background: #f26522; color: white; }
+        .btn-primary:hover { background: #d55a1e; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #5a6268; }
+        .btn-danger { background: #dc3545; color: white; padding: 6px 12px; font-size: 12px; }
+        .btn-danger:hover { background: #c82333; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #218838; }
+        
+        .button-row { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+        
+        .surcharge-table { width: 100%; border-collapse: collapse; }
+        .surcharge-table th { background: #f8f9fa; padding: 10px; text-align: left; font-size: 11px; font-weight: 600; color: #555; }
+        .surcharge-table td { padding: 8px; border-bottom: 1px solid #eee; }
+        .surcharge-table input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; }
+        .surcharge-table .item-input { width: 200px; }
+        .surcharge-table .price-input { width: 150px; }
+        .surcharge-table .unit-input { width: 100%; }
+        
+        .freetime-table { width: 100%; border-collapse: collapse; }
+        .freetime-table th { background: #f8f9fa; padding: 10px; text-align: left; font-size: 11px; font-weight: 600; color: #555; }
+        .freetime-table td { padding: 8px 10px; border-bottom: 1px solid #eee; font-size: 13px; }
+        
+        .action-bar { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .generate-btn { font-size: 16px; padding: 15px 40px; }
+        
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+        
+        .info-text { font-size: 12px; color: #666; margin-top: 10px; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <div>
+                    <h1>NRA Quote Generator</h1>
+                    <span>KLN Freight (USA) Inc. - FMC OTI-NO. 022122NF</span>
+                </div>
+            </div>
+            <div class="logo-upload">
+                <img id="logoPreview" class="logo-preview" alt="Logo">
+                <label class="btn btn-secondary" style="cursor: pointer;">
+                    Upload Logo
+                    <input type="file" id="logoInput" accept="image/*" style="display: none;">
+                </label>
+            </div>
+        </div>
+
+        <!-- Quote Info Section -->
+        <div class="section">
+            <div class="section-title">Quote Information</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Customer Name</label>
+                    <input type="text" id="customerName" placeholder="Enter customer name">
+                </div>
+                <div class="form-group">
+                    <label>Quote Date</label>
+                    <input type="date" id="quoteDate">
+                </div>
+                <div class="form-group">
+                    <label>Reference #</label>
+                    <input type="text" id="refNumber" placeholder="Optional">
+                </div>
+                <div class="form-group">
+                    <label>Prepared By</label>
+                    <input type="text" id="preparedBy" value="Leandro Vazquez" readonly style="background: #f8f9fa;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Carrier Rates Section -->
+        <div class="section">
+            <div class="section-title">Carrier Rates</div>
+            <table class="carrier-table" id="carrierTable">
+                <thead>
+                    <tr>
+                        <th style="width: 120px;">Carrier</th>
+                        <th>Origin</th>
+                        <th>Destination</th>
+                        <th>POD</th>
+                        <th style="width: 80px;">Mode</th>
+                        <th>Effective Date</th>
+                        <th>Expire Date</th>
+                        <th style="width: 80px;">20STD</th>
+                        <th style="width: 80px;">40STD</th>
+                        <th style="width: 80px;">40HC</th>
+                        <th style="width: 60px;"></th>
+                    </tr>
+                </thead>
+                <tbody id="carrierBody">
+                </tbody>
+            </table>
+            <div class="button-row">
+                <button class="btn btn-primary" onclick="addCarrierRow()">+ Add Carrier</button>
+                <button class="btn btn-secondary" onclick="duplicateLastRow()">Duplicate Last Row</button>
+            </div>
+        </div>
+
+        <div class="two-col">
+            <!-- Surcharges Section -->
+            <div class="section">
+                <div class="section-title">Subject To (Surcharges)</div>
+                <table class="surcharge-table" id="surchargeTable">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Price</th>
+                            <th>Unit</th>
+                            <th style="width: 50px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="surchargeBody">
+                    </tbody>
+                </table>
+                <div class="button-row">
+                    <button class="btn btn-primary" onclick="addSurchargeRow()">+ Add Surcharge</button>
+                </div>
+            </div>
+
+            <!-- Free Time Section -->
+            <div class="section">
+                <div class="section-title">Carrier Free Time Reference</div>
+                <table class="freetime-table">
+                    <thead>
+                        <tr>
+                            <th>Carrier</th>
+                            <th>Free Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Maersk</td><td>7 working</td></tr>
+                        <tr><td>MSC</td><td>10 working</td></tr>
+                        <tr><td>ZIM</td><td>14 Calendar</td></tr>
+                        <tr><td>EMC</td><td>12 Calendar</td></tr>
+                        <tr><td>CMA</td><td>14 Calendar</td></tr>
+                        <tr><td>YML</td><td>14 Calendar</td></tr>
+                        <tr><td>HMM</td><td>10 Calendar</td></tr>
+                        <tr><td>ONE</td><td>14 Calendar</td></tr>
+                        <tr><td>SML</td><td>10 Calendar</td></tr>
+                        <tr><td>WHL</td><td>10 working</td></tr>
+                        <tr><td>HAPAG</td><td>14 Calendar</td></tr>
+                    </tbody>
+                </table>
+                <p class="info-text">This reference table will be included in the PDF.</p>
+            </div>
+        </div>
+
+        <!-- Generate Button -->
+        <div class="action-bar">
+            <button class="btn btn-success generate-btn" onclick="generatePDF()">Generate PDF Quote</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize with today's date
+        document.getElementById('quoteDate').valueAsDate = new Date();
+        
+        // Logo handling
+        let logoDataUrl = null;
+        document.getElementById('logoInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    logoDataUrl = e.target.result;
+                    const preview = document.getElementById('logoPreview');
+                    preview.src = logoDataUrl;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Default surcharges
+        const defaultSurcharges = [
+            { item: 'AMS', price: '$35', unit: 'Per Bill (Billed to shipper unless otherwise agreed)' },
+            { item: 'ISF', price: '$35', unit: 'per bill' },
+            { item: 'Pier Pass', price: '$36 / $72', unit: 'per 20 / per 40, 40HC, 40RQ, & 45' },
+            { item: 'Chassis fee', price: '$45', unit: 'per day' },
+            { item: 'Destination Handling fee', price: '$80', unit: 'per bill' },
+            { item: 'US Customs Entry Fee (subject to tax and duty)', price: '$95', unit: 'per bill' },
+            { item: 'Detention or demurrage admin fee', price: '5% of amount paid (minimum $50)', unit: 'per instance' }
+        ];
+
+        // Initialize page
+        function init() {
+            addCarrierRow();
+            defaultSurcharges.forEach(s => addSurchargeRow(s.item, s.price, s.unit));
+        }
+
+        function addCarrierRow(carrier='', origin='', destination='', pod='', mode='Ocean', effDate='', expDate='', rate20='', rate40='', rate40hc='') {
+            const tbody = document.getElementById('carrierBody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="text" value="${carrier}" placeholder="e.g., CMA"></td>
+                <td><input type="text" value="${origin}" placeholder="e.g., Laem Chabang"></td>
+                <td><input type="text" value="${destination}" placeholder="e.g., LA Ports"></td>
+                <td><input type="text" value="${pod}" placeholder="e.g., Los Angeles, CA"></td>
+                <td><input type="text" value="${mode}" style="width: 70px;"></td>
+                <td><input type="date" class="date-input" value="${effDate}"></td>
+                <td><input type="date" class="date-input" value="${expDate}"></td>
+                <td><input type="text" class="rate-input" value="${rate20}" placeholder="$"></td>
+                <td><input type="text" class="rate-input" value="${rate40}" placeholder="$"></td>
+                <td><input type="text" class="rate-input" value="${rate40hc}" placeholder="$"></td>
+                <td><button class="btn btn-danger" onclick="this.closest('tr').remove()">✕</button></td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        function duplicateLastRow() {
+            const tbody = document.getElementById('carrierBody');
+            const rows = tbody.querySelectorAll('tr');
+            if (rows.length > 0) {
+                const lastRow = rows[rows.length - 1];
+                const inputs = lastRow.querySelectorAll('input');
+                addCarrierRow(
+                    '', // carrier blank
+                    inputs[1].value,
+                    inputs[2].value,
+                    inputs[3].value,
+                    inputs[4].value,
+                    inputs[5].value,
+                    inputs[6].value,
+                    '', '', '' // rates blank
+                );
+            } else {
+                addCarrierRow();
+            }
+        }
+
+        function addSurchargeRow(item='', price='', unit='') {
+            const tbody = document.getElementById('surchargeBody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="text" class="item-input" value="${item}" placeholder="Item name"></td>
+                <td><input type="text" class="price-input" value="${price}" placeholder="Price"></td>
+                <td><input type="text" class="unit-input" value="${unit}" placeholder="Unit"></td>
+                <td><button class="btn btn-danger" onclick="this.closest('tr').remove()">✕</button></td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            // Parse the date string directly to avoid timezone issues
+            const parts = dateStr.split('-');
+            const year = parseInt(parts[0]);
+            const month = parseInt(parts[1]) - 1; // months are 0-indexed
+            const day = parseInt(parts[2]);
+            const months = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'];
+            return `${months[month]} ${day} ${year}`;
+        }
+
+        function formatRate(val) {
+            if (!val) return '-';
+            const num = val.toString().replace(/[^0-9.]/g, '');
+            return num ? '$' + parseFloat(num).toLocaleString() : '-';
+        }
+
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'letter');
+            const pageWidth = 215.9;
+            const pageHeight = 279.4;
+            const margin = 15;
+            let y = margin;
+
+            // Colors
+            const orange = [242, 101, 34];
+            const darkGray = [51, 51, 51];
+            const lightGray = [150, 150, 150];
+
+            // Logo
+            if (logoDataUrl) {
+                try {
+                    doc.addImage(logoDataUrl, 'PNG', margin, y, 50, 15);
+                } catch(e) {
+                    console.log('Logo error:', e);
+                }
+            }
+
+            // Header text
+            doc.setFontSize(18);
+            doc.setTextColor(...orange);
+            doc.text('Negotiated Rate Arrangement (NRA)', pageWidth - margin, y + 5, { align: 'right' });
+            
+            doc.setFontSize(9);
+            doc.setTextColor(...lightGray);
+            doc.text('KLN Freight (USA) Inc. - FMC OTI-NO. 022122NF', pageWidth - margin, y + 12, { align: 'right' });
+
+            y += 25;
+
+            // Quote info
+            doc.setFontSize(10);
+            doc.setTextColor(...darkGray);
+            const preparedBy = document.getElementById('preparedBy').value;
+            const quoteDate = formatDate(document.getElementById('quoteDate').value);
+            const refNumber = document.getElementById('refNumber').value;
+            const customerName = document.getElementById('customerName').value;
+
+            doc.text(`Prepared by Agent: ${preparedBy}`, margin, y);
+            y += 5;
+            doc.text(`Quote Date: ${quoteDate}`, margin, y);
+            if (refNumber) {
+                doc.text(`REF#: ${refNumber}`, margin + 80, y);
+            }
+            y += 8;
+
+            doc.setFontSize(10);
+            doc.setTextColor(...lightGray);
+            doc.text('NRA QUOTE PREPARED FOR:', margin, y);
+            y += 5;
+            doc.setFontSize(12);
+            doc.setTextColor(...darkGray);
+            doc.setFont(undefined, 'bold');
+            doc.text(customerName || '[Customer Name]', margin, y);
+            doc.setFont(undefined, 'normal');
+            y += 10;
+
+            // Carrier table
+            const carrierRows = document.querySelectorAll('#carrierBody tr');
+            const carriers = [];
+            carrierRows.forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                if (inputs[0].value) {
+                    carriers.push({
+                        carrier: inputs[0].value,
+                        origin: inputs[1].value,
+                        destination: inputs[2].value,
+                        pod: inputs[3].value,
+                        mode: inputs[4].value,
+                        effDate: formatDate(inputs[5].value),
+                        expDate: formatDate(inputs[6].value),
+                        rate20: formatRate(inputs[7].value),
+                        rate40: formatRate(inputs[8].value),
+                        rate40hc: formatRate(inputs[9].value)
+                    });
+                }
+            });
+
+            if (carriers.length > 0) {
+                // Table header - adjusted widths to fit page (total ~186mm for 215.9mm page with 15mm margins)
+                const tableWidth = pageWidth - margin * 2;
+                const colWidths = [16, 22, 20, 22, 12, 20, 20, 13, 13, 13];
+                const headers = ['Carrier', 'Origin', 'Dest.', 'POD', 'Mode', 'Effective', 'Expire', '20STD', '40STD', '40HC'];
+                const maxChars = [10, 14, 12, 14, 6, 12, 12, 8, 8, 8]; // max characters per column
+                
+                doc.setFillColor(...orange);
+                doc.rect(margin, y, tableWidth, 7, 'F');
+                
+                doc.setFontSize(7);
+                doc.setTextColor(255, 255, 255);
+                doc.setFont(undefined, 'bold');
+                let x = margin + 1;
+                headers.forEach((h, i) => {
+                    doc.text(h, x, y + 5);
+                    x += colWidths[i];
+                });
+                doc.setFont(undefined, 'normal');
+                y += 7;
+
+                // Table rows
+                doc.setTextColor(...darkGray);
+                doc.setFontSize(7);
+                carriers.forEach((c, idx) => {
+                    if (idx % 2 === 0) {
+                        doc.setFillColor(248, 249, 250);
+                        doc.rect(margin, y, tableWidth, 6, 'F');
+                    }
+                    x = margin + 1;
+                    const vals = [c.carrier, c.origin, c.destination, c.pod, c.mode, c.effDate, c.expDate, c.rate20, c.rate40, c.rate40hc];
+                    vals.forEach((v, i) => {
+                        const truncated = v.length > maxChars[i] ? v.substring(0, maxChars[i] - 1) + '…' : v;
+                        doc.text(truncated, x, y + 4);
+                        x += colWidths[i];
+                    });
+                    y += 6;
+                });
+                y += 5;
+            }
+
+            // Surcharges
+            const surchargeRows = document.querySelectorAll('#surchargeBody tr');
+            const surcharges = [];
+            surchargeRows.forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                if (inputs[0].value) {
+                    surcharges.push({
+                        item: inputs[0].value,
+                        price: inputs[1].value,
+                        unit: inputs[2].value
+                    });
+                }
+            });
+
+            if (surcharges.length > 0) {
+                doc.setFontSize(10);
+                doc.setFont(undefined, 'bold');
+                doc.text('Subject to:', margin, y);
+                doc.setFont(undefined, 'normal');
+                y += 5;
+
+                doc.setFontSize(8);
+                const maxWidth = pageWidth - margin * 2 - 5;
+                surcharges.forEach(s => {
+                    const line = `• ${s.item}: ${s.price} - ${s.unit}`;
+                    const splitLine = doc.splitTextToSize(line, maxWidth);
+                    doc.text(splitLine, margin + 2, y);
+                    y += splitLine.length * 4;
+                });
+                y += 3;
+            }
+
+            // Free time table
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'bold');
+            doc.text('Carrier Free Time:', margin, y);
+            doc.setFont(undefined, 'normal');
+            y += 5;
+
+            const freeTime = [
+                ['Maersk', '7 working'], ['MSC', '10 working'], ['ZIM', '14 Cal'],
+                ['EMC', '12 Cal'], ['CMA', '14 Cal'], ['YML', '14 Cal'],
+                ['HMM', '10 Cal'], ['ONE', '14 Cal'], ['SML', '10 Cal'],
+                ['WHL', '10 working'], ['HAPAG', '14 Cal']
+            ];
+
+            doc.setFontSize(7);
+            const colWidth = (pageWidth - margin * 2) / 4;
+            let col = 0;
+            freeTime.forEach((f, i) => {
+                const xPos = margin + (col * colWidth);
+                doc.text(`${f[0]}: ${f[1]}`, xPos, y);
+                col++;
+                if (col >= 4) {
+                    col = 0;
+                    y += 4;
+                }
+            });
+            if (col !== 0) y += 4;
+            y += 5;
+
+            // Terms
+            const textWidth = pageWidth - margin * 2;
+            
+            doc.setFontSize(9);
+            doc.setFont(undefined, 'bold');
+            doc.text('Terms:', margin, y);
+            doc.setFont(undefined, 'normal');
+            y += 4;
+            doc.setFontSize(8);
+            const term1 = doc.splitTextToSize('Demurrage and detention charges will be rated per the carrier and terminal\'s published tariff.', textWidth);
+            doc.text(term1, margin, y);
+            y += term1.length * 3.5;
+            doc.text('NRA rates and terms and conditions shall be kept confidential.', margin, y);
+            y += 5;
+
+            doc.setFont(undefined, 'bold');
+            doc.text('Cargo Insurance:', margin, y);
+            doc.setFont(undefined, 'normal');
+            y += 4;
+            const insurance = doc.splitTextToSize('For your protection, affordable "All Risk" cargo insurance is available and recommended. Please contact us to ensure your cargo is properly insured.', textWidth);
+            doc.text(insurance, margin, y);
+            y += insurance.length * 3.5 + 2;
+
+            doc.setFont(undefined, 'bold');
+            doc.text('Negotiated Rate Arrangement (NRA):', margin, y);
+            doc.setFont(undefined, 'normal');
+            y += 4;
+            const nraText = 'This rate quote is an offer to you to enter into a Confidential Negotiated Rate Arrangement (NRA). We have ability to pass along at cost, any additional charges that are assessed by the carriers, terminals, truckers or other third-parties pertaining to the movement of your cargo.';
+            const splitNra = doc.splitTextToSize(nraText, textWidth);
+            doc.text(splitNra, margin, y);
+            y += splitNra.length * 3.5 + 4;
+
+            // Acceptance
+            doc.setFontSize(7);
+            doc.setTextColor(...lightGray);
+            const acceptance = "THE SHIPPER'S BOOKING OF CARGO AFTER RECEIVING THE TERMS OF THIS NRA OR NRA AMENDMENT CONSTITUTES ACCEPTANCE OF THE RATES AND TERMS OF THIS NRA OR NRA AMENDMENT";
+            const splitAccept = doc.splitTextToSize(acceptance, textWidth);
+            doc.text(splitAccept, margin, y);
+            y += splitAccept.length * 3 + 6;
+
+            // Footer
+            doc.setFontSize(9);
+            doc.setTextColor(...darkGray);
+            doc.setFont(undefined, 'bold');
+            doc.text(`QUOTE PREPARED BY: ${preparedBy}`, margin, y);
+            doc.setFont(undefined, 'normal');
+            y += 5;
+            doc.setFontSize(8);
+            const footerLine1 = 'K-APEX (SFO) - 877 Mahler Rd, 2nd Floor, Burlingame, CA 94010';
+            const footerLine2 = 'T 1 650 589 2575 | F 1 650 827 7382';
+            doc.text(footerLine1, margin, y);
+            y += 4;
+            doc.text(footerLine2, margin, y);
+            y += 4;
+            doc.text('As agent of KLN FREIGHT (USA) INC. – FMC OTI-NO. 022122NF', margin, y);
+
+            // Save
+            const filename = `NRA_Quote_${customerName.replace(/[^a-zA-Z0-9]/g, '_') || 'Customer'}_${new Date().toISOString().split('T')[0]}.pdf`;
+            doc.save(filename);
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
